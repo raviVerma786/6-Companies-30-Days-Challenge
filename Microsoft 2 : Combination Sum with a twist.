@@ -1,0 +1,22 @@
+Question Link : https://leetcode.com/problems/combination-sum-iii/description/
+
+Solution : 
+
+class Solution {
+private:
+    vector<vector<int>> ans;
+    vector<int> v;
+public:
+    vector<vector<int>> combinationSum3(int k, int n,int i=9) {
+        if(k==0){
+            if(n==0) ans.push_back(v);
+            return ans;
+        }
+        if(i<1) return ans;
+        v.push_back(i);
+        ans = combinationSum3(k-1,n-i,i-1);
+        v.pop_back();
+        ans = combinationSum3(k,n,i-1);
+        return ans;
+    }
+};
