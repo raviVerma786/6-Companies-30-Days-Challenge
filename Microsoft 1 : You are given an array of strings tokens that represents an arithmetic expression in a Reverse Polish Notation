@@ -1,1 +1,26 @@
-#include<bits/stdc++.h>
+Question Link : https://leetcode.com/problems/evaluate-reverse-polish-notation/
+
+Solution:
+
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<long long> st;
+        for(string &s : tokens){
+            if(s == "+" || s=="-" || s=="*" || s=="/"){
+                int right = st.top();
+                st.pop();
+                int left = st.top();
+                st.pop();
+                if(s=="+") st.push(left + right);
+                else if(s=="-") st.push(left - right);
+                else if(s=="*") st.push(left *1LL* right);
+                else if(s=="/") st.push(left / right);
+            }
+            else{
+                st.push(stoi(s));
+            }
+        }
+        return st.top();
+    }
+};
