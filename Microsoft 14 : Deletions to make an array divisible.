@@ -1,0 +1,60 @@
+Question Link : https://leetcode.com/problems/minimum-deletions-to-make-array-divisible/submissions/869940137/
+
+Soluiton 1 : 
+
+class Solution {
+public:
+    bool isPossible(int x,vector<int>&numDivide){
+        for(int i : numDivide){
+            if(i % x != 0) return false;
+        }
+
+        return true;
+    }
+
+    int minOperations(vector<int>& nums, vector<int>& numsDivide) {
+        sort(nums.begin(),nums.end());
+        int i = 0;
+        while(i<nums.size()){
+            int x = nums[i];
+            if(isPossible(x,numsDivide)) return i;
+            else{
+                while(i<nums.size() && nums[i] == x) i++;
+            }
+        }
+
+        return -1;
+    }
+};
+
+
+Solution 2 : 
+
+class Solution {
+public:
+    bool isPossible(int x,vector<int>&numDivide){
+        for(int i : numDivide){
+            if(i % x != 0) return false;
+        }
+
+        return true;
+    }
+
+    int minOperations(vector<int>& nums, vector<int>& numsDivide) {
+        int hcf = 0;
+        for(int i : numsDivide){
+            hcf = __gcd(hcf,i);
+        }
+        sort(nums.begin(),nums.end());
+        int i = 0;
+        while(i<nums.size()){
+            int x = nums[i];
+            if(hcf % x == 0 && isPossible(x,numsDivide)) return i;
+            else{
+                while(i<nums.size() && nums[i] == x) i++;
+            }
+        }
+
+        return -1;
+    }
+};
