@@ -1,0 +1,34 @@
+Question Link : https://leetcode.com/problems/bulls-and-cows/submissions/869610075/
+
+Solution : 
+
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int bull = 0,cow=0;
+        vector<int> v(10,0);
+        for(char ch : secret) v[ch-'0']++;
+
+        for(int i=0;i<secret.size();i++){
+            if(secret[i] == guess[i]) {
+                v[secret[i] - '0']--;
+                bull++;
+            }
+        }
+        
+        for(int i=0;i<secret.size();i++){
+            if(secret[i] != guess[i] && v[guess[i]-'0'] > 0) {
+                v[guess[i]-'0']--;
+                cow++;
+            }
+        }
+
+        string ans = "";
+        ans += (to_string(bull));
+        ans.push_back('A');
+        ans = ans + (to_string(cow));
+        ans.push_back('B');
+
+        return ans;
+    }
+};
