@@ -1,0 +1,69 @@
+Question Link : https://leetcode.com/problems/number-of-pairs-satisfying-inequality/description/
+Solution : 
+
+class Solution {
+private:
+    long long count = 0;
+public:
+//here in merge we get two sorted array and we have to merge them
+    void merge(vector<int>&v,int low,int mid,int high,int diff){
+        int i=low,j=mid+1;
+        
+        //first we calculate count accordingly
+        while(i<=mid && j<=high){
+            if(v[i] - v[j] <= diff){
+                count += (high - j + 1);
+                i++;
+            }
+            else{
+                j++;
+            }
+        }
+        
+        //now merge the array
+        vector<int> arr;
+        i = low,j = mid+1;
+        while(i<=mid && j<=high){
+            if(v[i] <= v[j]){
+                arr.push_back(v[i]);
+                i++;
+            }else{
+                arr.push_back(v[j]);
+                j++;
+            }
+        }
+
+        while(i<=mid){
+            arr.push_back(v[i]);
+            i++;
+        }
+
+        while(j<=high){
+            arr.push_back(v[j]);
+            j++;
+        }
+
+        for(int k=low;k<=high;k++){
+            v[k] = arr[k - low];
+        }
+
+    }
+    void mergeSort(vector<int>&v,int low,int high,int diff){
+        if(low < high){
+            int mid = (low + high)/2;
+            mergeSort(v,low,mid,diff);
+            mergeSort(v,mid+1,high,diff);
+            merge(v,low,mid,high,diff);
+        }
+    }
+    long long numberOfPairs(vector<int>& nums1, vector<int>& nums2, int diff) {
+       vector<int> v; // v[i] = nums1[i] - nums2[i]
+       for(int i=0;i<nums1.size();i++){
+           v.push_back(nums1[i] - nums2[i]);
+       }
+       
+       // now we to satify condition v[i] - v[j] <= diff where j>i
+       mergeSort(v,0,v.size()-1,diff);
+       return count;
+    }
+};
