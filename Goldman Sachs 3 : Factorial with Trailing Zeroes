@@ -1,0 +1,18 @@
+Question Link : https://leetcode.com/problems/factorial-trailing-zeroes/submissions/747648470/
+
+Solution : 
+
+class Solution {
+public:
+    int trailingZeroes(int n) {
+       int ans = 0;
+        int div = 5;
+        
+        while(n/div != 0){
+            ans += n/div;
+            div *= 5;
+        }
+        
+        return ans;
+    }
+};
