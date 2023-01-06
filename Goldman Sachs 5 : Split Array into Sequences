@@ -1,0 +1,40 @@
+Question Link : https://leetcode.com/problems/split-array-into-consecutive-subsequences/description/
+
+
+Solution : 
+
+class Solution {
+    //https://www.youtube.com/watch?v=Gmc-4Dpzw2g&ab_channel=CodeFreaks
+public:
+    bool isPossible(vector<int>& nums) {
+        unordered_map<int,int> mp;
+        for(int i : nums) mp[i]++;
+
+        unordered_map<int,int> endElement;
+        for(int i=0;i<nums.size();i++){
+            int n = nums[i];
+            if(mp[n] > 0){
+                if(endElement[n -1] > 0){
+                    mp[n]--;
+                    endElement[n-1]--;
+                    endElement[n]++;
+                }
+                
+                else if(mp[n + 1] > 0 && mp[n + 2] > 0){
+                    mp[n]--;
+                    mp[n+1]--;
+                    mp[n+2]--;
+
+                    endElement[n+2]++;
+                }
+            
+                else{
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+       
+};
