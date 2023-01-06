@@ -1,0 +1,35 @@
+Question Link : https://leetcode.com/problems/valid-square/description/
+
+
+Solution : 
+
+class Solution {
+public:
+    int pointsDistance(vector<int>&p,vector<int>&q){
+        int x1 = p[0] , y1 = p[1] , x2 = q[0] , y2 = q[1];
+        int dis = (x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2);
+        return dis;
+    }
+    bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
+        //two points must not same
+        if(p1==p2 || p1==p3 || p1==p4 || p2==p3 || p2==p4 || p3==p4) return false;
+
+        unordered_map<int,int> mp;
+        mp[pointsDistance(p1,p2)]++;
+        mp[pointsDistance(p1,p3)]++;
+        mp[pointsDistance(p1,p4)]++;
+        mp[pointsDistance(p2,p3)]++;
+        mp[pointsDistance(p2,p4)]++;
+        mp[pointsDistance(p3,p4)]++;
+        
+        // only two distance possible (side length and diagonal length)
+        if(mp.size() != 2) return false; 
+        
+        // there are 4 sides and 2 diagonals if any distace count not matches return false
+        for(pair<int,int> p : mp){
+            if(p.second != 4 && p.second != 2) return false;
+        }
+
+        return true;
+    }
+};
