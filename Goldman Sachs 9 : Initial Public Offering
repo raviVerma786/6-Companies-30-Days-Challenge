@@ -1,0 +1,32 @@
+Question Link : https://leetcode.com/problems/ipo/description/
+
+Solution : 
+
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w, vector<int>& profits, vector<int>& capital) {
+        int n=profits.size();
+        vector<pair<int,int>> projects(n);
+        for(int i=0;i<n;i++) projects[i]={profits[i],capital[i]}; 
+        
+        //sort accoding non-decreasing capitals i.e start with minimum capital
+        sort(projects.begin(),projects.end(),[](pair<int,int> &a,pair<int,int>& b){ 
+            return a.second<b.second;});
+         
+        int i = 0;
+        priority_queue<int> maxProfit;
+        while(k--){
+        //push all profit in maxHeap that can be gained by capital w so that we can extract maximum of them
+            while(i<n && w>=projects[i].second) {
+                maxProfit.push(projects[i].first);
+                i++;
+            }
+            
+            if(!maxProfit.empty()) {
+                w+=maxProfit.top();
+                maxProfit.pop();
+            }
+        }
+        return w;
+    }
+};
