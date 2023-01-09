@@ -1,0 +1,46 @@
+Question Link : https://leetcode.com/problems/all-elements-in-two-binary-search-trees/description/
+
+Solution : 
+
+class Solution {
+public:
+    void traversal(TreeNode* root,vector<int> &ans){
+        if(root!=NULL){
+            traversal(root->left,ans);
+            ans.push_back(root->val);
+            traversal(root->right,ans);
+        }
+        
+    }
+    vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
+        vector<int>left;
+        vector<int>right;
+        traversal(root1,left);
+        traversal(root2,right);
+        
+        vector<int> ans;
+        int i=0,j=0;
+        while(i<left.size() && j<right.size()){
+            if(left[i] < right[j]){
+                ans.push_back(left[i]);
+                i++;
+            }
+            else{
+                ans.push_back(right[j]);
+                j++;
+            }
+        }
+
+        while(i<left.size()){
+            ans.push_back(left[i]);
+            i++;
+        }
+
+        while(j < right.size()){
+            ans.push_back(right[j]);
+            j++; 
+        }
+        
+        return ans;
+    }
+};
