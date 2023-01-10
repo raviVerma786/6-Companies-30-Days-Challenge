@@ -1,0 +1,40 @@
+Question Link : https://leetcode.com/problems/count-nice-pairs-in-an-array/description/
+
+Solution : 
+
+//modified problem : nums[i] - rev(nums[i]) == nums[j] - rev(nums[j])
+class Solution {
+public:
+    int rev(int n){
+        int number = 0;
+        while(n){
+            number = number * 10 + n%10;
+            n /= 10;
+        }
+
+        return number;
+    }
+    int countNicePairs(vector<int>& nums) {
+        int n = nums.size();
+        int mod = 1e9 + 7;
+
+        unordered_map<int,int> diffOfNumAndRev; // store nums[i] - rev(nums[i])
+        for(int i=0;i<n;i++){
+            int x = nums[i] - rev(nums[i]);
+            diffOfNumAndRev[x]++;
+        }
+        
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            int x = nums[i] - rev(nums[i]);
+            diffOfNumAndRev[x]--; // now only j > i remains into map
+
+            if(diffOfNumAndRev[x] > 0){
+                ans = (ans + diffOfNumAndRev[x]) % mod;
+            }
+        }
+        
+        return ans;
+
+    }
+};
