@@ -1,0 +1,25 @@
+Question Link :https://leetcode.com/problems/maximum-matrix-sum/description/
+
+Solution : 
+
+class Solution {
+public:
+    long long maxMatrixSum(vector<vector<int>>& matrix) {
+        //if even number of -ve element then it will be definetly terminated and if odd number of -ve element then we need to subtract the -ve number having least absolute value from our ans
+//the main thing is if ct is odd then -ve sign can be shifted to absolutely smallest value     
+        long long ans=0;
+        int ct = 0,minEle = INT_MAX;
+        for(int i=0;i<matrix.size();i++){
+            for(int j=0;j<matrix[0].size();j++){
+                int num = abs(matrix[i][j]);
+                ans += num;
+                if(matrix[i][j] < 0){
+                    ct++;
+                }
+                minEle = min(minEle,num);
+            }
+        }
+        if(ct%2) ans -= 2*minEle;
+        return ans;
+    }
+};
