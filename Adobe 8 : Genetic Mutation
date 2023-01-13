@@ -1,0 +1,45 @@
+Question Link :https://leetcode.com/problems/minimum-genetic-mutation/description/
+
+Solution :
+
+class Solution {
+public:
+    int minMutation(string start, string end, vector<string>& bank) {
+        if(start.size() != end.size()) return -1;
+        if(start == end) return 0;
+        
+        unordered_set<string> st;
+        for(string &s : bank) st.insert(s);
+        
+        queue<pair<string,int>> q; //{string,mutations}
+        q.push({start,0});
+        
+        while(!q.empty()){
+            string str = q.front().first;
+            int mutations = q.front().second;
+            q.pop();
+            
+            if(str == end) return mutations;
+            vector<string> temp;
+            
+            for(string s : st){
+                if(s.size() != str.size()) continue;
+                int cnt = 0;
+                for(int i=0;i<s.size();i++){
+                    if(s[i] != str[i]) cnt++;
+                }
+                if(cnt == 1){
+                    q.push({s,mutations + 1});
+                    temp.push_back(s);
+                }
+            }
+            
+            for(string &s : temp){
+                st.erase(s);
+            }
+            
+        }
+        
+        return -1;
+    }
+};
