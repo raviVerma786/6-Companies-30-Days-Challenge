@@ -1,0 +1,30 @@
+Question Link :https://leetcode.com/problems/query-kth-smallest-trimmed-number/description/
+
+Solution 1: 
+
+class Solution {
+public:
+    vector<int> smallestTrimmedNumbers(vector<string>& nums, vector<vector<int>>& queries) {
+        int stringSize = nums[0].size();
+        vector<int> ans;
+        for(vector<int>& query : queries){
+            int k = query[0],idx = stringSize - query[1];
+            priority_queue<pair<string,int>> pq;
+            int i= 0;
+            for(string &s : nums){
+                string str = s.substr(idx);
+                if(pq.size() < k) pq.push({str,i});
+                else if(pq.top().first > str){
+                    pq.pop();
+                    pq.push({str,i});
+                }
+
+                i++;
+            }
+
+            ans.push_back(pq.top().second);
+        }
+
+        return ans;
+    }
+};
