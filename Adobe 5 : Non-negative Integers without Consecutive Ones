@@ -1,0 +1,37 @@
+Question Link :https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/description/
+
+Solution Link :
+
+class Solution {
+    // https://www.youtube.com/watch?v=CMWRQDMTaZY&ab_channel=codeTree
+private:
+    int fib[31];
+    void fillFib(){
+        fib[0] = 1;
+        fib[1] = 2;
+        for(int i=2;i<31;i++){
+            fib[i] = fib[i-1] + fib[i-2];
+        }
+    }
+public:
+    int findIntegers(int n) {
+        fillFib();
+        
+        int ans = 0,bit = 30; // ans is taken 1 because 0 is always a answer
+        bool lastBitOne = false;
+        while(bit>=0){
+            if((n&(1<<bit))){
+                ans += fib[bit];
+                if(lastBitOne) return ans;
+                lastBitOne = true;
+            }
+            else{
+                lastBitOne = false;
+            }
+
+            bit--;
+        }
+        
+        return ans+1; // adding 1 because input number was also a valid ans
+    }
+};
