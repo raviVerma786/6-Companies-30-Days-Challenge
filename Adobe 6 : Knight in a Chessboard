@@ -1,0 +1,49 @@
+Question Link : https://leetcode.com/problems/knight-probability-in-chessboard/description/
+
+Solution: 
+
+class Solution {
+public:
+// https://www.youtube.com/watch?v=54nJhM2AZv4&ab_channel=Pepcoding
+    bool isValid(int i,int j,int n){
+        return i>=0 && j>=0 && i<n && j<n;
+    }
+    
+    double knightProbability(int n, int k, int row, int column) {
+        vector<vector<double>> curr(n,vector<double>(n,0));
+        vector<vector<double>> next(n,vector<double>(n,0));
+        curr[row][column] = 1;
+
+        //moves
+        int dx[8] = {-1,-1,-2,-2,1,2,2,1};
+        int dy[8] = {-2,2,-1,1,-2,-1,1,2};
+
+        while(k--){
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+
+                    if(curr[i][j] != 0){
+                        for(int x=0;x<8;x++){
+                            if(isValid(i+dx[x],j+dy[x],n)){
+                                next[i+dx[x]][j+dy[x]] += curr[i][j]/8.0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            curr = next;
+            next = vector<vector<double>>(n,vector<double>(n,0));
+        }
+    
+        double totalProbability = 0;
+    
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                totalProbability += curr[i][j];
+            }
+        }
+
+        return totalProbability;
+    }
+};
