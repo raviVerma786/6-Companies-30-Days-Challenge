@@ -1,0 +1,44 @@
+Question Link : https://leetcode.com/problems/partition-to-k-equal-sum-subsets/description/
+
+Solution :
+
+class Solution {
+public:
+    bool f(vector<int>&nums,vector<bool>&visited,int i,int target,int curr_sum,int k)
+    {
+        //Base Case 
+        if(k==1) return true;
+        if(i>=nums.size()) return false; // It help to avoid TLE
+
+        if(curr_sum==target)
+            return f(nums,visited,0,target,0,k-1);
+
+        for(int j=i;j<nums.size();j++)
+        {
+            if(!visited[j] && curr_sum + nums[j] <= target)
+            {
+                visited[j] = true;
+                if(f(nums,visited,j+1,target,curr_sum + nums[j],k)) return true;
+                visited[j] = false;
+            }
+        }
+
+        return false;
+    }
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+         int sum = 0;
+         for(int i=0;i<nums.size();i++){
+             sum+=nums[i];
+         }
+         if(nums.size()<k || sum%k!=0) return false;
+
+         int target = sum/k;
+         for(int i : nums){
+             if(i > target) return false;
+         }
+         
+         sort(nums.rbegin(),nums.rend()); //this will reduce the complexity of backtracking
+         vector<bool>visited(nums.size(),false);
+         return f(nums,visited,0,target,0,k);
+    }
+};
