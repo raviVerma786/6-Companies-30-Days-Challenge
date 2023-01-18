@@ -1,0 +1,21 @@
+Question Link : https://leetcode.com/problems/house-robber-iii/description/
+
+Solution :
+
+class Solution {
+private:
+    unordered_map<TreeNode*,int> mp;
+public:
+    int rob(TreeNode* root) {
+        if(!root) return 0;
+        if(mp.count(root)) return mp[root];
+        
+        int take = root->val;
+        if(root->left) take += rob(root->left->left) + rob(root->left->right);
+        if(root->right) take += rob(root->right->left) + rob(root->right->right);
+
+        int notTake = rob(root->left) + rob(root->right);
+
+        return mp[root] = max(take,notTake);
+    }
+};
