@@ -1,0 +1,43 @@
+Question Link : https://leetcode.com/problems/distant-barcodes/submissions/881378544/
+
+Solution : 
+
+class Solution {
+public:
+    vector<int> rearrangeBarcodes(vector<int>& barcodes) {
+        int n = barcodes.size();
+        vector<int> v(barcodes); // copy barcodes in v not to disturb barcodes array
+        sort(v.begin(),v.end());
+        
+        priority_queue<pair<int,int>> pq; //{count,number}
+        int i = 0;
+        while(i<n){
+            int number = v[i] , cnt = 0;
+            while(i<n && v[i] == number){
+                cnt++;
+                i++;
+            }
+
+            pq.push({cnt,number});
+        }
+        
+        // now use vector v to store ans and then return it i.e. now v will act as ans array
+        i = 0; // i= 0 to fill even positions first
+        while(!pq.empty()){
+            int cnt = pq.top().first,number = pq.top().second;
+            pq.pop();
+
+            while(i < n && cnt > 0){
+                v[i] = number;
+                cnt--;
+                i += 2;
+                if(i >= n){
+                    i = 1; // now start filling odd positions
+                }
+            }
+
+        }
+
+        return v;
+    }
+};
