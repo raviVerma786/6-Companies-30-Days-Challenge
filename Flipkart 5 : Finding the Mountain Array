@@ -1,0 +1,62 @@
+Question Link :https://leetcode.com/problems/find-in-mountain-array/description/
+
+Solution : 
+
+//refer question : search in rotated sorted array
+class Solution {
+private:
+    int getPeak(MountainArray &nums){
+        int n = nums.length();
+        int start = 0,end = n-1;
+        while(start < end){
+            int mid = (end + start)/2;
+            
+            if(nums.get(mid) > nums.get(mid+1)){
+                end = mid;
+            }
+            else {
+                start = mid + 1;
+            }
+        }
+
+        return end; //start == end so return any
+    }
+    
+    //search in increasing array
+    int binarySearch(MountainArray &nums,int low,int high,int target){
+        while(low <= high){
+            int mid = (high + low)/2;
+            if(nums.get(mid) == target) return mid;
+            if(nums.get(mid) > target) high = mid - 1;
+            else low = mid + 1;
+        } 
+
+        return -1;
+    }
+    
+    //search in decreasing array
+    int reverseBinarySearch(MountainArray &nums,int low,int high,int target){
+        while(low <= high){
+            int mid = (high + low)/2;
+            if(nums.get(mid) == target) return mid;
+            if(nums.get(mid) > target) low = mid + 1;
+            else high = mid - 1;
+        } 
+
+        return -1;
+    }
+
+public:
+     int findInMountainArray(int target, MountainArray &nums) {
+        int peak = getPeak(nums);
+        int indexInAscending = binarySearch(nums,0,peak,target);
+        int indexInDescending = reverseBinarySearch(nums,peak+1,nums.length()-1,target);
+
+        if(indexInAscending != -1) return indexInAscending;
+
+        else if(indexInDescending != -1) return indexInDescending;
+
+        return -1;
+        
+    }
+};
