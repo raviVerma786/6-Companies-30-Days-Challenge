@@ -1,0 +1,85 @@
+Question Link : 
+
+Solution 1 : 
+
+    ListNode* removeZeroSumSublists(ListNode* head) {
+        ListNode* dummy = new ListNode(0), *cur = dummy;
+        dummy->next = head;
+
+        int prefix = 0;
+        unordered_map<int, ListNode*> m;
+        while (cur) {
+            prefix += cur->val;
+            if (m.count(prefix)) {
+                cur =  m[prefix]->next;
+                int p = prefix + cur->val;
+                while (p != prefix) {
+                    m.erase(p);
+                    cur = cur->next;
+                    p += cur->val;
+                }
+                m[prefix]->next = cur->next;
+            } else {
+                m[prefix] = cur;
+            }
+            cur = cur->next;
+        }
+        return dummy->next;
+    }
+   
+   
+   
+Solution 2 : (my solution)
+  
+class Solution {
+public:
+    ListNode* removeZeroSumSublists(ListNode* head) {
+        if(!head) return head;
+        
+        vector<pair<int,ListNode*>> prefixSum;
+        unordered_map<int,int> countSum;
+        ListNode* temp = head;
+        
+        int sum = 0;
+        while(temp){
+            int n = prefixSum.size();
+            
+            sum += temp->val;
+            if(sum == 0){
+                prefixSum.clear();
+                countSum.clear();
+                temp = temp->next;
+                continue;
+            }
+
+            if(n == 0 || countSum[sum]  == 0){
+                prefixSum.push_back({sum,temp});
+                countSum[sum]++;
+                temp = temp->next;
+                continue;
+            }
+
+            if(countSum[sum] > 0){
+                int lastVal = prefixSum.back().first;
+                while(lastVal != sum){
+                    countSum[lastVal]--;
+                    prefixSum.pop_back();
+                    lastVal = prefixSum.back().first;
+                }
+            }
+            temp = temp->next;
+        }
+
+        int n = prefixSum.size();
+        if(n == 0) return NULL;
+        
+        // for(auto it : prefixSum) cout<<it.second->val<<" ";
+        for(int i=1;i<n;i++){
+            prefixSum[i-1].second->next = prefixSum[i].second;
+        }
+
+        prefixSum[n-1].second->next = NULL;
+        return prefixSum[0].second;
+
+    }
+};
