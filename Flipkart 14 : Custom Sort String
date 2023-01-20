@@ -1,0 +1,30 @@
+Question Link : https://leetcode.com/problems/custom-sort-string/description/
+
+Solution: 
+
+class Solution {
+    // https://www.youtube.com/watch?v=8A3N6HWnWtI&ab_channel=AyushiSharma
+public:
+    string customSortString(string order, string s) {
+        vector<int> v(26,0);
+        for(char ch : order){
+            v[ch - 'a']++;
+        }
+
+        string notBelongToOrder = "";
+        for(char ch : s){
+            if(v[ch-'a'] == 0) notBelongToOrder.push_back(ch);
+            else v[ch - 'a']++;
+        }
+
+        string ordered = "";
+        for(char ch : order){
+            while(v[ch - 'a'] > 1){
+                ordered.push_back(ch);
+                v[ch - 'a']--;
+            }
+        }
+
+        return (ordered + notBelongToOrder);
+    }
+};
