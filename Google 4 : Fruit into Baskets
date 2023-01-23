@@ -1,0 +1,85 @@
+Question Link : https://leetcode.com/problems/fruit-into-baskets/submissions/883936473/
+
+Solution 1 : 
+
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        // unordered_map stores no. of types of fruits in the current window
+        // here key is the type of the fruit 
+        // and value is the number of fruits of 'key' type in the current window
+        unordered_map<int,int>m;
+        
+        // 'i' is the left and 'j' is the right pointer of thw window
+        // 'ans' will be the answer
+        int i=0,j=0,ans=0;
+        while(j<fruits.size())
+        {
+            m[fruits[j]]++;
+            // as long as there are more than 2 types of fruit, shrink the window
+            while(m.size()>2)
+            {
+                if(m[fruits[i]]==1)
+                {
+                    m.erase(fruits[i]);
+                }
+                else
+                {
+                    m[fruits[i]]--;
+                }
+                i++;
+            }
+            
+            // take the max of already encountered window and current window
+            ans=max(ans,j-i+1);
+            
+            // move the right pointer
+            j++;
+        }
+        
+        // finally return the answer
+        return ans;
+    }
+};
+
+Solution 2 : 
+
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        unordered_map<int,int> mp;
+        unordered_map<int,int> index;
+        int ans = 0;
+
+        for(int i=0;i<fruits.size();i++){
+            if(mp.count(fruits[i]) == 0 && mp.size() == 2){
+                int cnt = 0;
+                for(auto p : mp) cnt += p.second;
+                ans = max(ans,cnt);
+                
+                auto it = mp.begin();
+                if(it->first == fruits[i-1]) it++;
+                mp.erase(it);
+                
+                //find index of last element which was not equal to fruits[i-1] ans erase it
+                auto it2 = index.begin();
+                if(it2->first == fruits[i-1]) it2++;
+                int idx = it2->second;
+                index.erase(it2);
+
+                mp[fruits[i-1]] = (i-1) - idx; // updating count of element remaining
+            }
+
+            mp[fruits[i]]++;
+            index[fruits[i]] = i;
+        }
+        
+        if(mp.size() <= 2){
+            int cnt = 0;
+            for(auto p : mp) cnt += p.second;
+            ans = max(ans,cnt);
+        }
+
+        return ans;
+    }
+};
