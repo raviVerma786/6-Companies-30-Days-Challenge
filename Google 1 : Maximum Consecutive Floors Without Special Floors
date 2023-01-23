@@ -1,0 +1,19 @@
+Question Link : https://leetcode.com/problems/maximum-consecutive-floors-without-special-floors/description/
+
+Solution: 
+
+class Solution {
+public:
+    int maxConsecutive(int bottom, int top, vector<int>& special) {
+        sort(special.begin(),special.end());
+        int n = special.size();
+        int k1 = special[0] - bottom ;
+        int k2 = top - special[n-1];
+        int ans = max(k1,k2);
+        for(int i=1;i<special.size();i++){
+            int k = special[i] - special[i-1] - 1;
+            ans = max(ans,k);
+        }
+        return ans;
+    }
+};
