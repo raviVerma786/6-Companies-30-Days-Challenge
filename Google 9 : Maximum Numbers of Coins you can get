@@ -1,0 +1,21 @@
+Question Link :https://leetcode.com/problems/maximum-number-of-coins-you-can-get/description/
+
+Solution : 
+
+class Solution {
+public:
+    int maxCoins(vector<int>& piles) {
+        sort(piles.begin(),piles.end());
+
+        //each time i have to take second big number so take first one and last two elements each time i.e. make triplet each time by taking starting and last two elements of reamaing sorted array
+        int i=0,j=piles.size() - 1;
+        int maxCoins = 0;
+        while(i<j){
+            maxCoins += piles[j-1];
+            i++;
+            j -= 2;
+        }
+
+        return maxCoins;
+    }
+};
