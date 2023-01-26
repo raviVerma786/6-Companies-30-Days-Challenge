@@ -9,19 +9,15 @@ public:
         int n = nums.size();
         unordered_set<string> set;
         
-        vector<int> prefSum(n + 1,0);
-        for(int i = 0; i < n; i++)
-            prefSum[i + 1] = prefSum[i] + (nums[i] % p == 0);
-        
         for(int i = 0; i < n; i++){
             string subAr = "";
+            int cnt = 0;
             for(int j = i; j < n; j++){
-                if(prefSum[j + 1] - prefSum[i] <= k){
-                    // subAr.push_back(nums[j]);
-                    subAr += (nums[j] + '0');
-                    set.insert(subAr);
-                }
-                else break;
+                subAr += (nums[j] + '0');
+
+                if(nums[j] % p == 0) cnt++;
+                if(cnt > k) break;
+                else set.insert(subAr);
             }
         }
         
