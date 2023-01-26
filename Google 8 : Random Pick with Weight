@@ -1,0 +1,25 @@
+Question Link : https://leetcode.com/problems/random-pick-with-weight/description/
+
+Solution : 
+
+class Solution {
+private:
+    // https://www.youtube.com/watch?v=fWS0TCcr-lE&ab_channel=TECHDOSE
+    vector<int> v;
+public:
+    Solution(vector<int>& w) {
+        v.push_back(w[0]);
+        for(int i=1;i<w.size();i++){
+            v.push_back(v.back() + w[i]);
+        }
+    }
+    
+    int pickIndex() {
+        int totalSum = v.back();
+        int RandomNum = (rand() % totalSum);
+        
+        //randomNum always less than totalSum so upperbound is always possible
+        int idx = upper_bound(v.begin(),v.end(),RandomNum) - v.begin();
+        return idx;
+    }
+};
