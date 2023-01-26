@@ -1,0 +1,30 @@
+Question Link : https://leetcode.com/problems/k-divisible-elements-subarrays/description/
+
+Solution :
+
+class Solution {
+public:
+//https://www.youtube.com/watch?v=GzWGBWDmhN0&ab_channel=CodingDecoded
+    int countDistinct(vector<int>& nums, int k, int p) {
+        int n = nums.size();
+        unordered_set<string> set;
+        
+        vector<int> prefSum(n + 1,0);
+        for(int i = 0; i < n; i++)
+            prefSum[i + 1] = prefSum[i] + (nums[i] % p == 0);
+        
+        for(int i = 0; i < n; i++){
+            string subAr = "";
+            for(int j = i; j < n; j++){
+                if(prefSum[j + 1] - prefSum[i] <= k){
+                    // subAr.push_back(nums[j]);
+                    subAr += (nums[j] + '0');
+                    set.insert(subAr);
+                }
+                else break;
+            }
+        }
+        
+        return set.size();
+    }
+};
