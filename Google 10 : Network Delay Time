@@ -1,0 +1,43 @@
+Question Link : https://leetcode.com/problems/network-delay-time/description/
+
+Solution : 
+
+class Solution {
+public:
+    //this is simple djisktra algorithm
+    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+        vector<pair<int,int>> adj[n+1];
+        for(vector<int> v : times){
+            adj[v[0]].push_back({v[1],v[2]});
+        }
+        
+        //djisktra algorithm
+        vector<int> shortestPathDistance(n+1,INT_MAX);
+        shortestPathDistance[k] = 0;
+        shortestPathDistance[0] = 0;
+        
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        //store (distance , node);
+        pq.push({0,k});
+        
+        while(!pq.empty()){
+            pair<int,int> p = pq.top();
+            pq.pop();
+            
+            int node = p.second;
+            int distance = p.first;
+            
+            for(pair<int,int> it : adj[node]){
+                int tempNode = it.first;
+                int tempDis = it.second;
+                if(distance + tempDis < shortestPathDistance[tempNode]){
+                    shortestPathDistance[tempNode] = distance + tempDis;
+                    pq.push({shortestPathDistance[tempNode],tempNode});
+                }
+            }
+        }
+        
+       int ans = *max_element(shortestPathDistance.begin(),shortestPathDistance.end());
+       return ans==INT_MAX? -1 : ans;
+    }
+};
