@@ -1,0 +1,11 @@
+Question Link :https://leetcode.com/problems/strictly-palindromic-number/description/
+
+Solution : 
+
+class Solution {
+public:
+// see hint i.e. The number n in base (n - 2) is always 12, which is not palindromic.
+    bool isStrictlyPalindromic(int n) {
+        return false;
+    }
+};
