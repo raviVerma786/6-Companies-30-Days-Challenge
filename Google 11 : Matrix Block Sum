@@ -1,0 +1,50 @@
+Question link : https://leetcode.com/problems/matrix-block-sum/description/
+
+Solution : 
+
+class Solution {
+public:
+    // optimisation using fenwick tree
+    int fenwick[101][101]; //use always 1 based indexing
+    void update(int r,int c,int val){
+        while(c < 101){
+            fenwick[r][c] += val;
+            c += c&(-c);
+        }
+    }
+    int sum(int r,int c){
+        int ans = 0;
+        while(c > 0){
+            ans += fenwick[r][c];
+            c -= c&(-c);
+        }
+        return ans;
+    }
+    
+    vector<vector<int>> matrixBlockSum(vector<vector<int>>& mat, int k) {
+        vector<vector<int>> ans(mat);
+        
+        //updating values
+        for(int i=0;i<mat.size();i++){
+            for(int j=0;j<mat[0].size();j++){
+                update(i+1,j+1,mat[i][j]);
+            }
+        }
+        
+        //storing block sum
+        for(int i=0;i<mat.size();i++){
+            for(int j=0;j<mat[0].size();j++){
+                int temp = 0;
+                int r1 = (i-k) >=0 ? (i-k) : 0;
+                int r2 = (i+k) >= mat.size() ? mat.size()-1 : i+k;
+                int c1 = (j-k) >=0 ? j-k : 0;
+                int c2 = (j + k) >= mat[0].size() ? mat[0].size()-1 : j+k;
+                for(int r = r1;r<=r2;r++){
+                    temp += sum(r+1,c2+1) - sum(r+1,c1);
+                }
+                ans[i][j] = temp;
+            }
+        }
+        return ans;
+    }
+};
