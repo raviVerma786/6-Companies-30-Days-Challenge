@@ -1,0 +1,27 @@
+Question Link : https://leetcode.com/problems/distinct-echo-substrings/description/
+
+Solution 1 : 
+
+class Solution {
+// https://www.youtube.com/watch?v=UsrW60_lbRs&ab_channel=Pepcoding
+public:
+    int distinctEchoSubstrings(string text) {
+        unordered_set<string> st;
+        
+        int n = text.size();
+        for(int len = 1;len<=n/2;len++){
+            int count = 0;
+            for(int l=0,r=len;r<n;l++,r++){
+                if(text[l] == text[r]) count++;
+                else count = 0;
+
+                if(count == len){
+                    st.insert(text.substr(l,r-l+1));
+                    count--; // first character removed
+                }
+            }
+        }
+
+        return st.size();
+    }
+};
