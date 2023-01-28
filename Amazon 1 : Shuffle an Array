@@ -1,0 +1,22 @@
+Question Link :https://leetcode.com/problems/shuffle-an-array/description/
+
+Solution :
+
+class Solution {
+private:
+    vector<int> shuffeled,original;
+public:
+    Solution(vector<int>& nums) {
+        shuffeled = nums;
+        original = nums;
+    }
+    
+    vector<int> reset() {
+        return original;
+    }
+    
+    vector<int> shuffle() {
+        next_permutation(shuffeled.begin(),shuffeled.end());
+        return shuffeled;
+    }
+};
