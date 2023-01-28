@@ -1,0 +1,26 @@
+Question link :https://leetcode.com/problems/split-a-string-into-the-max-number-of-unique-substrings/description/
+
+Solution : 
+
+class Solution {
+private:
+    unordered_map<string,int> mp;
+public: 
+    int maxUniqueSplit(string s) {
+        if(s.size() == 0) return 0;
+        
+        string str = "";
+        int ans = 0;
+
+        for(int i=0;i<s.size();i++){
+            str += s[i];
+            if(mp[str] == 0){
+                mp[str]++;
+                ans = max(ans,1 + maxUniqueSplit(s.substr(i+1)));
+                mp[str]--;
+            }
+        }
+
+        return ans;
+    }
+};
