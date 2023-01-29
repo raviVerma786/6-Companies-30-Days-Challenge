@@ -1,0 +1,19 @@
+Question Link : https://leetcode.com/problems/destroying-asteroids/description/
+
+Solution : 
+
+class Solution {
+public:
+    bool asteroidsDestroyed(int mass, vector<int>& asteroids) {
+        vector<int> ast(asteroids);
+        sort(ast.begin(),ast.end());
+        
+        long long planetMass = mass;
+        for(int astMass : ast){
+            if(planetMass >= astMass) planetMass += astMass;
+            else return false;
+        }
+
+        return true;
+    }
+};
