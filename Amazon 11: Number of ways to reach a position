@@ -1,0 +1,21 @@
+Question Link : https://leetcode.com/problems/number-of-ways-to-reach-a-position-after-exactly-k-steps/description/
+
+Solution : 
+
+class Solution {
+private:
+    int dp[3003][1001];
+    int mod = 1e9 + 7;
+    int helper(int startPos,int endPos,int k){
+        if(endPos - startPos > k) return 0;
+        if(k == 0) return startPos == endPos;
+        if(dp[startPos + 1001][k] != -1) return dp[startPos + 1001][k];
+
+        return dp[startPos+1001][k] = (helper(startPos + 1,endPos,k-1) + 0LL + helper(startPos-1,endPos,k-1))%mod;
+    }
+public:
+    int numberOfWays(int startPos, int endPos, int k) {
+        memset(dp,-1,sizeof(dp));
+        return helper(startPos,endPos,k);
+    }
+};
