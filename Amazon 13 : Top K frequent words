@@ -1,0 +1,41 @@
+Question Link :https://leetcode.com/problems/top-k-frequent-words/
+
+Solution : 
+
+class Solution {
+public:
+   struct comparator
+    {
+        bool operator() (pair<int, string>& a, pair<int, string>& b)
+        {
+            if(a.first == b.first)           
+                return a.second < b.second;                        
+            return a.first > b.first;
+        }
+    };
+    
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string,int> cnt;
+        for(string &s : words) cnt[s]++;
+        
+        priority_queue<pair<int, string>, vector<pair<int, string>>, comparator> pq;
+        
+        for(pair<string,int> p : cnt){
+            if(pq.size() == k){
+                if(p.second > pq.top().first || (pq.top().first == p.second && p.first < pq.top().second)){
+                    pq.pop();
+                    pq.push({p.second,p.first});
+                }
+            } else pq.push({p.second,p.first});
+        }
+        
+        vector<string> ans;
+        while(!pq.empty()){
+                ans.push_back(pq.top().second);
+                pq.pop();
+        }
+        
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
