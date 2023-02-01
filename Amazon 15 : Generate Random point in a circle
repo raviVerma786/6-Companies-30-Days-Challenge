@@ -1,0 +1,25 @@
+Question Link : https://leetcode.com/problems/generate-random-point-in-a-circle/description/
+
+Solution : 
+
+class Solution {
+private:
+    double xc,yc,r;
+    // https://www.youtube.com/watch?v=Ooo30_5GJFA&ab_channel=CodewithAlisha
+public:
+    Solution(double radius, double x_center, double y_center) {
+        xc = x_center;
+        yc = y_center;
+        r = radius;
+    }
+    
+    vector<double> randPoint() {
+        double random = (double)rand() / RAND_MAX; //[0,1]
+        double theta = random * 2 * (3.141592653589793238); // [0,2*pi]
+
+        double random2 = (double)rand() / RAND_MAX; //[0,1]
+        double length = sqrt(random2) * r; //[0,r]
+
+        return {xc + (length * cos(theta)) , yc + (length * sin(theta))};
+    }
+};
