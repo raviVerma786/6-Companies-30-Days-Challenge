@@ -1,0 +1,45 @@
+Question : https://leetcode.com/problems/tweet-counts-per-frequency/description/
+
+Solution : 
+
+class TweetCounts {
+private:
+    map<string,vector<int>> mp; //{tweet,times of tweet}
+public:
+    TweetCounts() {
+        mp.clear();
+    }
+    
+    void recordTweet(string tweetName, int time) {
+        mp[tweetName].push_back(time);
+    }
+    
+    vector<int> getTweetCountsPerFrequency(string freq, string tweetName, int startTime, int endTime) {
+        if(mp.count(tweetName) == 0) return {};
+
+        int duration = 0;
+        if(freq == "minute") duration = 60;
+        else if(freq == "hour") duration = 60*60;
+        else duration = 24 * 60 * 60;
+
+        vector<int> v(mp[tweetName]);
+        sort(v.begin(),v.end());
+        
+        vector<int> frequencies;
+        int i=0,start = startTime,end = min(startTime + duration -1,endTime);
+
+        //now calculate no of tweets for all durations
+        while(start <= endTime){
+            while(i<v.size() && v[i] < start) i++;
+
+            int cnt = 0;
+            while(i<v.size() && v[i] <= end) i++,cnt++;
+
+            frequencies.push_back(cnt);
+            start = end + 1;
+            end = min(end + duration,endTime);
+        }
+    
+        return frequencies;
+    }
+};
