@@ -1,0 +1,55 @@
+Question Link :https://leetcode.com/problems/maximum-subarray-min-product/
+
+Solution : 
+
+class Solution {
+public:
+//Using histogram concept (84. Largest Rectangle in Histogram)
+    int maxSumMinProduct(vector<int>& arr) {
+        int n = arr.size();
+
+        //find prefixSum
+        long long prefixSum[n];
+        prefixSum[0] = arr[0];
+        for(int i=1;i<n;i++) prefixSum[i] = prefixSum[i-1] + arr[i];
+
+        //find limits
+        int leftLimit[n];
+        int rightLimit[n];
+        stack<int> st;
+        //storing left limits of each index
+        for(int i=0;i<n;i++){
+                    while(!st.empty() && arr[st.top()] >= arr[i])
+                        st.pop();
+                        
+                    leftLimit[i] = st.empty() ? -1 : st.top();
+            
+                    st.push(i);
+            }
+           
+        //clearing stack
+        while(!st.empty()) st.pop();
+           
+         //storing right limits of each index
+        for(int i=n-1;i>=0;i--){
+                while(!st.empty() && arr[st.top()] >= arr[i]){
+                        st.pop();
+                }
+            
+                rightLimit[i] = st.empty() ? (n-1) : (st.top() - 1);
+            
+                st.push(i);
+        }
+
+        //finally calculate ans
+        long long ans = 0;
+        for(int i=0;i<n;i++){
+            long long sum = prefixSum[rightLimit[i]];
+            if(leftLimit[i] >= 0) sum -= prefixSum[leftLimit[i]];
+
+            ans = max(ans,sum*arr[i]);
+        }
+
+        return ans % 1000000007;
+    }
+};
