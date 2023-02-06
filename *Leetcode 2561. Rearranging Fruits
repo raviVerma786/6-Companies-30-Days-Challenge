@@ -1,0 +1,64 @@
+Question Link : https://leetcode.com/problems/rearranging-fruits/description/
+
+Solution : 
+
+class Solution {
+    // https://www.youtube.com/watch?v=0bWw8b_o_Y8&ab_channel=DeepCodes
+public:
+    long long minCost(vector<int>& basket1, vector<int>& basket2) {
+        unordered_map<int,int> cnt1,cnt2;
+        int minValue = INT_MAX , n = basket1.size();
+
+        for(int i=0;i<n;i++){
+            cnt1[basket1[i]]++;
+            minValue = min(minValue,basket1[i]);
+
+            cnt2[basket2[i]]++;
+            minValue = min(minValue,basket2[i]);
+        }
+
+        vector<int> toSwap;
+        for(pair<int,int> p : cnt1){
+            int cost = p.first,
+            occ1 = p.second,
+            occ2 = cnt2[p.first];
+
+            int diff = abs(occ1 - occ2);
+            if(diff % 2 == 1) return -1;
+
+            diff /=2;
+            while(diff--){
+                toSwap.push_back(cost);
+            }
+
+            cnt1[cost] = 0;
+            cnt2[cost] = 0;
+        }
+
+        for(pair<int,int> p : cnt2){
+            int cost = p.first,
+            occ1 = p.second,
+            occ2 = cnt1[p.first];
+
+            int diff = abs(occ1 - occ2);
+            if(diff % 2 == 1) return -1;
+
+            diff /=2;
+            while(diff--){
+                toSwap.push_back(cost);
+            }
+
+            cnt1[cost] = 0;
+            cnt2[cost] = 0;
+        }
+
+        sort(toSwap.begin(),toSwap.end());
+        //now sum of half elements is our ans
+        long long ans = 0;
+        for(int i=0;i<toSwap.size()/2;i++){
+            ans += min (2*minValue,toSwap[i]);
+        }
+
+        return ans;
+    }
+};
